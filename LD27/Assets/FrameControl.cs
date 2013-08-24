@@ -18,7 +18,9 @@ public class FrameControl : MonoBehaviour {
 
     public void Hide() {
         foreach (Transform t in transform) {
-            t.GetComponentInChildren<Renderer>().enabled = false;
+            Renderer r= t.GetComponentInChildren<Renderer>();
+            if(r != null)
+                r.enabled = false;
         }
     }
 }
