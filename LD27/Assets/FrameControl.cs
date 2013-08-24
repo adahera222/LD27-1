@@ -6,17 +6,19 @@ public class FrameControl : MonoBehaviour {
     public GameObject currentFrame;
 
     void Awake() {
-        GameObject g  = GameObject.Find("0");
-        foreach (Transform t in transform) {
-            t.GetComponentInChildren<Renderer>().enabled = false;
-        }
-        SetFrame(0);
+        Hide();
     }
 
     public void SetFrame(int frameid) {
         if(currentFrame!= null)
         currentFrame.GetComponentInChildren<Renderer>().enabled = false;
-        currentFrame = GameObject.Find(frameid + "");
+        currentFrame = GameObject.Find(name + "/" + frameid + "");
         currentFrame.GetComponentInChildren<Renderer>().enabled = true;
+    }
+
+    public void Hide() {
+        foreach (Transform t in transform) {
+            t.GetComponentInChildren<Renderer>().enabled = false;
+        }
     }
 }
