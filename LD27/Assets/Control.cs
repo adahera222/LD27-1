@@ -1,9 +1,6 @@
 ﻿using UnityEngine;
 using System.Collections;
 
-/**
- * dr critical
- */
 public class Control : MonoBehaviour {
     
     public Transform body;
