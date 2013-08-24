@@ -3,7 +3,13 @@ using System.Collections;
 
 public class FrameControl : MonoBehaviour {
 
-    public GameObject currentFrame;
+    public GameObject CurrentFrame {
+        get {
+            return currentFrame;
+        }
+    }
+
+    GameObject currentFrame;
 
     void Awake() {
         Hide();

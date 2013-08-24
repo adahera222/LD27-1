@@ -5,6 +5,7 @@ using System;
 
 public class Control : MonoBehaviour {
 
+    public GameObject projectilePrefab;
 
     public List<FrameControl> frameSets = new List<FrameControl>();
     List<Action> modes = new List<Action>();
@@ -18,9 +19,9 @@ public class Control : MonoBehaviour {
     public FrameControl fctrl;
 
     public void Awake() {
-        modes.Add(Mode1);
-        modes.Add(Mode2);
         modes.Add(Mode3);
+        modes.Add(Mode2);
+        modes.Add(Mode1);
     }
 
     public void Start() {
@@ -28,6 +29,14 @@ public class Control : MonoBehaviour {
     }
    
     public void Update() {
+
+        if (Input.GetMouseButtonUp(0)) {
+            LaunchPoint[] launchPoints = fctrl.CurrentFrame.GetComponentsInChildren<LaunchPoint>();
+            foreach (LaunchPoint lp in launchPoints) {
+                GameObject bullet = (GameObject)Instantiate(projectilePrefab,lp.transform.position,Quaternion.identity);
+                bullet.GetComponent<Projectile>().dir = lp.transform.forward;
+            }
+        }
 
         if (Input.GetKeyUp(KeyCode.Alpha1)) {
             Mode1();
@@ -38,16 +47,21 @@ public class Control : MonoBehaviour {
         }
         float mw = Input.GetAxisRaw("Mouse ScrollWheel");
         float smw = Mathf.Sign(mw);
+        float curIndex = index;
         index +=  (Mathf.Abs(mw) > 0) ? Mathf.RoundToInt(1*smw) :  Mathf.RoundToInt(0*smw);
+        
         if (index > modes.Count-1) index = modes.Count-1;
         if (index < 0) index = 0;
-        modes[index]();
+        if (curIndex != index) {
+            modes[index]();
+        }
 
         x = Input.GetAxisRaw("Horizontal");
         z = Input.GetAxisRaw("Vertical");
         fctrl.SetFrame(Mathf.Abs(facing));
         if(Mathf.Abs(x) > 0 || Mathf.Abs(z)>0) UpdateFacing();
-        transform.Translate(new Vector3(x * speed * Time.deltaTime, 0, z * speed * Time.deltaTime));
+        if (!Input.GetKey(KeyCode.LeftShift) || Input.GetKey(KeyCode.RightShift))
+            transform.Translate(new Vector3(x * speed * Time.deltaTime, 0, z * speed * Time.deltaTime));
     }
 
     public void Mode1() {
