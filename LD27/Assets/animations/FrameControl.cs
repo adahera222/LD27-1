@@ -21,7 +21,11 @@ public class FrameControl : MonoBehaviour {
     public void SetFrame(int frameid) {
         if(currentFrame!= null)
         currentFrame.GetComponentInChildren<Renderer>().enabled = false;
-        currentFrame = GameObject.Find(name + "/" + frameid + "");
+        foreach (Transform child in transform) {
+            if (child.name == frameid+"") {
+                currentFrame = child.gameObject;
+            }
+        }
         currentFrame.GetComponentInChildren<Renderer>().enabled = true;
     }
 

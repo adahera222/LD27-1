@@ -6,7 +6,7 @@ using System.Linq;
 public class Game : MonoBehaviour {
 
     public HUD hud;
-    float countDown = 5;
+    float countDown = 10;
     public Control heroProtagonist;
     public Teleporter teleporterMesh;
     public GameObject currentTeleporter;

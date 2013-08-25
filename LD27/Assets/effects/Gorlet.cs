@@ -1,8 +1,7 @@
 ﻿using UnityEngine;
 using System.Collections;
 
-public class Spark : MonoBehaviour {
-
+public class Gorlet : MonoBehaviour {
     public float lifespan;
     float startTime;
     public void Start() {

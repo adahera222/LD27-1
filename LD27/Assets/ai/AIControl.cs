@@ -3,6 +3,8 @@ using System.Collections;
 
 public class AIControl : MonoBehaviour {
 
+    public float hp = 10;
+
     float x;
     float z;
     public int facing;
@@ -47,5 +49,10 @@ public class AIControl : MonoBehaviour {
         else if (x == 1 && z == 1) {
             facing = 45;
         }
+    }
+
+    public void HandleDeath() {
+        Debug.Log("trying to die");
+        Destroy(gameObject);
     }
 }
