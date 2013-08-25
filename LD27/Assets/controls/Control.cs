@@ -6,7 +6,7 @@ using System;
 public class Control : MonoBehaviour {
 
     public GameObject projectilePrefab;
-
+    public Transform body;
     public List<FrameControl> frameSets = new List<FrameControl>();
     List<Action> modes = new List<Action>();
     public int mode;
@@ -35,6 +35,7 @@ public class Control : MonoBehaviour {
             foreach (LaunchPoint lp in launchPoints) {
                 GameObject bullet = (GameObject)Instantiate(projectilePrefab,lp.transform.position,Quaternion.identity);
                 bullet.GetComponent<Projectile>().dir = lp.transform.forward;
+                bullet.GetComponent<Projectile>().friendly = name;
             }
         }
 

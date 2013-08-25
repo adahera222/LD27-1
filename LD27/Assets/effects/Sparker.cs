@@ -2,12 +2,18 @@
 using System.Collections;
 
 
-public class Teleporter : MonoBehaviour {
+public class Sparker : MonoBehaviour {
 
     public MeshFilter filter;
-
-    public void Start() {
-        filter = GetComponent<MeshFilter>();
+    public GameObject particlePrefab;
+    public Light sparkLight;
+    
+    public void Update() {
+        int num = Random.Range(0,11);
+        for (int i = 0; i < num; i++) {
+            sparkLight.intensity = Random.value * 2;
+            GameObject go = (GameObject)Instantiate(particlePrefab, GetRandomMeshSpacePos(), Quaternion.identity);
+        }
     }
 
     public Vector3 GetRandomMeshSpacePos() {
@@ -17,4 +23,3 @@ public class Teleporter : MonoBehaviour {
         return transform.TransformPoint(randomPoint);
     }
 }
-
