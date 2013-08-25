@@ -25,7 +25,7 @@ public class Projectile : MonoBehaviour {
             Module telporter = hit.transform.GetComponent<Module>();
 
             if (telporter != null) {
-                telporter.CancelTeleport();
+                telporter.TryCancelTeleport();
                 return;
             }
 

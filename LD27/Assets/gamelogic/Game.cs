@@ -30,6 +30,8 @@ public class Game : MonoBehaviour {
         string val = countDown > -1 ? clamped.ToString("0") + "" : "--";
 
         if (val == "3") {
+            SetClosestTeleporter();
+            currentTeleporter.GetComponent<Module>().Locked();
             Time.timeScale = 0.5f;
         }
 
@@ -41,12 +43,12 @@ public class Game : MonoBehaviour {
     bool teleporting;
     public IEnumerator DoTeleport() {
         Time.timeScale = 1.0f;
-        SetClosestTeleporter();
         yield return StartCoroutine(SparkOutEffect(0.2f));
         yield return StartCoroutine(ScaleOut(0.2f));
         Vector3 v = teleporterMesh.GetRandomMeshSpacePos();
         Vector3 cp = heroProtagonist.transform.position;
         heroProtagonist.transform.position = new Vector3(v.x, cp.y, v.z);
+        currentTeleporter.GetComponent<Module>().Normal();
         SetClosestTeleporter();
         yield return StartCoroutine(SparkInEffect(0.3f));
         yield return StartCoroutine(ScaleIn(0.2f));
@@ -115,9 +117,11 @@ public class Game : MonoBehaviour {
         yield break;
     }
     
-    public void ResetCounter() {
-        ResetTimers();
-        Time.timeScale = 1.0f;
+    public void HitTeleporter(GameObject hit) {
+        if (currentTeleporter == hit) {
+            ResetTimers();
+            Time.timeScale = 1.0f;
+        }
     }
 
     private void ResetTimers() {
