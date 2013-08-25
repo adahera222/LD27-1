@@ -4,14 +4,12 @@ using System.Collections;
 public class AIControl : MonoBehaviour {
 
     public float hp = 10;
-
     float x;
     float z;
     public int facing;
     public FrameControl fctrl;
     public Vector2 curDir;
     public GameObject deathPosePrefab;
-
     public bool dead;
 
     public Vector3 CurrentDirection {

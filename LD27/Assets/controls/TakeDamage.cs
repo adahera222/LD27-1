@@ -9,6 +9,9 @@ public class TakeDamage : MonoBehaviour {
     public float startTime;
 
     public void Update() {
+
+
+
         transform.Translate(pushDir.normalized * Time.deltaTime * speed);
 
         if (Time.time - startTime > timer) {

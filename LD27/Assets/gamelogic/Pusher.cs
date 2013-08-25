@@ -29,6 +29,10 @@ public class Pusher : MonoBehaviour {
         steering.enabled = true;
         aicTRl.enabled = true;
         simpleLoc.enabled = true;
+
+        if (aicTRl.hp == 0 && !aicTRl.dead) {
+            aicTRl.HandleDeath();
+        }
     }
 
     public void Update() {

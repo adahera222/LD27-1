@@ -11,6 +11,7 @@ public class Gore : MonoBehaviour {
         for (int i = 0; i < num; i++) {
             GameObject go = (GameObject)Instantiate(goreBoxPrefab, GetRandomMeshSpacePos(), Quaternion.identity);
         }
+        Destroy(gameObject);
 	}
 
     public Vector3 GetRandomMeshSpacePos() {

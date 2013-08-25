@@ -5,6 +5,14 @@ using System;
 
 public class Control : MonoBehaviour {
 
+    public int potions;
+    public int skulls;
+
+    public GUIText potionsVal;
+    public GUIText skullsVal;
+    public Game game;
+    
+    public GameObject potionsPrefab;
     public GameObject projectilePrefab;
     public Transform body;
     public List<FrameControl> frameSets = new List<FrameControl>();
@@ -29,6 +37,12 @@ public class Control : MonoBehaviour {
     }
    
     public void Update() {
+
+        if (Input.GetMouseButtonUp(1) && potions != 0) {
+            LaunchPoint[] launchPoints = fctrl.CurrentFrame.GetComponentsInChildren<LaunchPoint>();
+            potions--;
+            Instantiate(potionsPrefab, launchPoints[0].transform.position, Quaternion.identity);
+        }
 
         if (Input.GetMouseButtonUp(0)) {
             LaunchPoint[] launchPoints = fctrl.CurrentFrame.GetComponentsInChildren<LaunchPoint>();
@@ -63,6 +77,9 @@ public class Control : MonoBehaviour {
         if(Mathf.Abs(x) > 0 || Mathf.Abs(z)>0) UpdateFacing();
         if (!Input.GetKey(KeyCode.LeftShift) || Input.GetKey(KeyCode.RightShift))
             transform.Translate(new Vector3(x * speed * Time.deltaTime, 0, z * speed * Time.deltaTime));
+
+        potionsVal.text = "X " + potions;
+        skullsVal.text = "X " + skulls;
     }
 
     public void Mode1() {

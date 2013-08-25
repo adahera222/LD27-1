@@ -32,7 +32,7 @@ public class Game : MonoBehaviour {
         if (val == "3") {
             SetClosestTeleporter();
             currentTeleporter.GetComponent<Module>().Locked();
-            Time.timeScale = 0.5f;
+            Time.timeScale = 0.33f;
         }
 
         if (val == "0" && ! teleporting) {
@@ -40,21 +40,25 @@ public class Game : MonoBehaviour {
             StartCoroutine(DoTeleport());
         }
     }
+
     bool teleporting;
     public IEnumerator DoTeleport() {
         Time.timeScale = 1.0f;
         yield return StartCoroutine(SparkOutEffect(0.2f));
         yield return StartCoroutine(ScaleOut(0.2f));
-        Vector3 v = teleporterMesh.GetRandomMeshSpacePos();
+        GameObject nextTeleporter = modules.GetRandomElement();
+        Vector3 v = new Vector3(nextTeleporter.transform.position.x , nextTeleporter.transform.position.y, nextTeleporter.transform.position.z-5);
         Vector3 cp = heroProtagonist.transform.position;
         heroProtagonist.transform.position = new Vector3(v.x, cp.y, v.z);
         currentTeleporter.GetComponent<Module>().Normal();
-        SetClosestTeleporter();
+        currentTeleporter = nextTeleporter;
         yield return StartCoroutine(SparkInEffect(0.3f));
         yield return StartCoroutine(ScaleIn(0.2f));
         ResetTimers();
         yield break;
     }
+
+   
 
     public IEnumerator SparkOutEffect(float duration) {
         heroProtagonist.GetComponent<Control>().enabled = false;
@@ -128,5 +132,14 @@ public class Game : MonoBehaviour {
         hud.countDown = 10;
         countDown = 10;
         teleporting = false;
+    }
+}
+
+public static class ListExtensions {
+    public static T GetRandomElement<T>(this IEnumerable<T> list) {
+        if (list.Count() == 0)
+            return default(T);
+        System.Random rand = new System.Random();
+        return list.ElementAt(rand.Next(list.Count()));
     }
 }
