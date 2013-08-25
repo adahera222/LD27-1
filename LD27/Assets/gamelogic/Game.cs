@@ -50,9 +50,7 @@ public class Game : MonoBehaviour {
         SetClosestTeleporter();
         yield return StartCoroutine(SparkInEffect(0.3f));
         yield return StartCoroutine(ScaleIn(0.2f));
-        hud.countDown = 10;
-        countDown = 10;
-        teleporting = false;
+        ResetTimers();
         yield break;
     }
 
@@ -115,5 +113,16 @@ public class Game : MonoBehaviour {
         }
 
         yield break;
+    }
+    
+    public void ResetCounter() {
+        ResetTimers();
+        Time.timeScale = 1.0f;
+    }
+
+    private void ResetTimers() {
+        hud.countDown = 10;
+        countDown = 10;
+        teleporting = false;
     }
 }

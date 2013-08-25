@@ -22,6 +22,14 @@ public class Projectile : MonoBehaviour {
 		if(Physics.Raycast(transform.position,-dir, out hit, delta) && hit.transform.name != friendly){
             Destroy(gameObject);
             AIControl ai = hit.transform.GetComponent<AIControl>();
+            Module telporter = hit.transform.GetComponent<Module>();
+
+            if (telporter != null) {
+                telporter.CancelTeleport();
+                return;
+            }
+
+
             if (ai != null && ai.hp == 0 && !ai.dead) {
                 ai.dead = true;
                 ai.HandleDeath();
