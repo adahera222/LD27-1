@@ -19,7 +19,7 @@ public class FrameControl : MonoBehaviour {
     }
 
     public void SetFrame(int frameid) {
-        if(currentFrame!= null)
+        if(currentFrame != null)
         currentFrame.GetComponentInChildren<Renderer>().enabled = false;
         foreach (Transform child in transform) {
             if (child.name == frameid+"") {

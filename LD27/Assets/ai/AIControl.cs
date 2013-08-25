@@ -9,8 +9,19 @@ public class AIControl : MonoBehaviour {
     float z;
     public int facing;
     public FrameControl fctrl;
+    public Vector2 curDir;
+    public GameObject deathPosePrefab;
+
+    public bool dead;
+
+    public Vector3 CurrentDirection {
+        get {
+            return curDir;
+        }
+    }
 
     public void Move(Vector3 dir) {
+        curDir = dir;
         x = Mathf.Round(dir.x);
         z = Mathf.Round(dir.z);
     }
@@ -52,7 +63,8 @@ public class AIControl : MonoBehaviour {
     }
 
     public void HandleDeath() {
-        Debug.Log("trying to die");
         Destroy(gameObject);
+        GameObject go =  (GameObject)Instantiate(deathPosePrefab, transform.position, Quaternion.identity);
+        go.GetComponent<DeathPose>().frameId = facing;
     }
 }

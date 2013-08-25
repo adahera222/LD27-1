@@ -20,10 +20,14 @@ public class Projectile : MonoBehaviour {
 		transform.Translate(dir*delta);
 		RaycastHit hit;
 		if(Physics.Raycast(transform.position,-dir, out hit, delta) && hit.transform.name != friendly){
-			Destroy(gameObject);
-
+            Destroy(gameObject);
             AIControl ai = hit.transform.GetComponent<AIControl>();
-            
+            if (ai != null && ai.hp == 0 && !ai.dead) {
+                ai.dead = true;
+                ai.HandleDeath();
+                return;
+            }
+
             if (ai != null && ai.hp > 0) {
                 ai.hp--;
                 Pusher pusher = ai.transform.GetComponent<Pusher>();
@@ -36,9 +40,7 @@ public class Projectile : MonoBehaviour {
                 
                 Instantiate(gore, hit.point, Quaternion.identity);
             }
-            else if (ai != null && ai.hp < 0) {
-                ai.HandleDeath();
-            }
+          
 		}
     }
 }
