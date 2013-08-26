@@ -11,17 +11,20 @@ public class Game : MonoBehaviour {
     public Teleporter teleporterMesh;
     public GameObject currentTeleporter;
 
+    public GameObject zedPrefab;
+    public GameObject potionPickUp;
+    public GameObject medKitPickUp;
+
+
     public List<GameObject> modules = new List<GameObject>();
-
+    public List<GameObject> zombies = new List<GameObject>();
     public GameObject sparkerPrefab;
-
+    public GUIText activity;
     public int CountDown {
         get {
             return Mathf.RoundToInt(countDown);
         }
     }
-
-
 
     public void Update() {
         hud.countDown = CountDown;
@@ -55,10 +58,44 @@ public class Game : MonoBehaviour {
         yield return StartCoroutine(SparkInEffect(0.3f));
         yield return StartCoroutine(ScaleIn(0.2f));
         ResetTimers();
+        currentTeleporter = null;
+        //StartCoroutine(SpawnStuff());
         yield break;
     }
 
-   
+    public IEnumerator SpawnStuff() {
+        
+        int num = Random.Range(0,10);
+        for (int i = 0; i < num; i ++ ) {
+            GameObject tp = modules.GetRandomElement();
+            Vector3 v = new Vector3(tp.transform.position.x, tp.transform.position.y, tp.transform.position.z - 5);
+            GameObject zed = (GameObject)Instantiate(zedPrefab, v, Quaternion.identity);
+            zed.GetComponent<Attack>().hero = heroProtagonist.transform;
+            zed.GetComponent<AIControl>().game = this;
+            zed.name = "name";
+            zombies.Add((GameObject)Instantiate(zedPrefab, v, Quaternion.identity));
+            yield return new WaitForSeconds(0.1f);
+        }
+        num = Random.Range(0, 2);
+        for (int i = 0; i < num; i++) {
+            GameObject tp = modules.GetRandomElement();
+            Vector3 v = new Vector3(tp.transform.position.x, tp.transform.position.y, tp.transform.position.z - 5);
+            GameObject go = (GameObject)Instantiate(medKitPickUp, v, Quaternion.identity);
+            go.name = "medkit";
+            yield return new WaitForSeconds(0.1f);
+        }
+
+        num = Random.Range(0, 3);
+        for (int i = 0; i < num; i++) {
+            GameObject tp = modules.GetRandomElement();
+            Vector3 v = new Vector3(tp.transform.position.x, tp.transform.position.y, tp.transform.position.z - 5);
+            GameObject go = (GameObject)Instantiate(potionPickUp, v, Quaternion.identity);
+            go.name = "potion";
+            yield return new WaitForSeconds(0.1f);
+        }
+
+        yield break;
+    }
 
     public IEnumerator SparkOutEffect(float duration) {
         heroProtagonist.GetComponent<Control>().enabled = false;

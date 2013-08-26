@@ -5,6 +5,9 @@ using System;
 
 public class Control : MonoBehaviour {
 
+
+    public int life = 3;
+    public List<GUITexture> lifebar = new List<GUITexture>();
     public int potions;
     public int skulls;
 
@@ -41,7 +44,8 @@ public class Control : MonoBehaviour {
         if (Input.GetMouseButtonUp(1) && potions != 0) {
             LaunchPoint[] launchPoints = fctrl.CurrentFrame.GetComponentsInChildren<LaunchPoint>();
             potions--;
-            Instantiate(potionsPrefab, launchPoints[0].transform.position, Quaternion.identity);
+            GameObject go = (GameObject)Instantiate(potionsPrefab, launchPoints[0].transform.position, Quaternion.identity);
+            go.GetComponent<ExplosivePotion>().game = game;
         }
 
         if (Input.GetMouseButtonUp(0)) {
@@ -80,6 +84,33 @@ public class Control : MonoBehaviour {
 
         potionsVal.text = "X " + potions;
         skullsVal.text = "X " + skulls;
+
+        for (int i = 0; i < 4; i++) {
+            lifebar[i].enabled = false;
+        } 
+
+        for (int i = 0; i < life; i++) {
+            lifebar[i].enabled = true;
+        }
+
+        RaycastHit hit;
+        if (Physics.SphereCast(new Ray(transform.position, transform.forward), 0.2f, out hit, 0.2f)) {
+            if (hit.transform.name == "Zed") {
+                Debug.Log("getting hit");
+                life--;
+                if (life < 0) {
+                    Destroy(gameObject);
+                }
+            }
+        }
+    }
+
+    public void OnGUI() {
+        if (life < 0) {
+            if (GUILayout.Button("Play Again")) {
+                Application.LoadLevel("main");
+            }
+        }
     }
 
     public void Mode1() {

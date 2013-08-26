@@ -7,12 +7,12 @@ public class DeathPose : MonoBehaviour {
     public FrameControl ctrl;
     public float timer;
     public float startTime;
+    public GameObject skullItemPrefab;
 
     bool fadeStarted = false;
     public void OnEnable() {
         timer = Time.time;
         ctrl.SetFrame(frameId);
-
     }
 
     public void Update() {
@@ -33,6 +33,14 @@ public class DeathPose : MonoBehaviour {
             yield return null;
         }
         r.material.color = new Color(0, 0, 0, 0);
+
+        float num = Random.Range(0, 10);
+
+        if (num < 6) {
+           GameObject go = (GameObject) Instantiate(skullItemPrefab, transform.position, Quaternion.identity);
+           go.name = "skull";
+        }
+
         Destroy(gameObject);
         yield break;
     }

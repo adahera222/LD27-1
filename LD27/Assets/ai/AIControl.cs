@@ -10,6 +10,8 @@ public class AIControl : MonoBehaviour {
     public FrameControl fctrl;
     public Vector2 curDir;
     public GameObject deathPosePrefab;
+    public GameObject gorletPrefab;
+    public Game game;
     public bool dead;
 
     public Vector3 CurrentDirection {
@@ -61,8 +63,18 @@ public class AIControl : MonoBehaviour {
     }
 
     public void HandleDeath() {
+        game.zombies.Remove(gameObject);
         Destroy(gameObject);
         GameObject go =  (GameObject)Instantiate(deathPosePrefab, transform.position, Quaternion.identity);
         go.GetComponent<DeathPose>().frameId = facing;
+    }
+
+    public void Explode() {
+        GetComponent<Pusher>().enabled = true;
+        int num = Random.Range(0,15);
+        for(int i = 0; i < num; i++){
+            Instantiate(gorletPrefab, transform.position, Quaternion.identity);
+        }
+        hp = 0;
     }
 }
